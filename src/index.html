@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <title>test</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<!-- <script src="vendors.js"></script> -->
+<script src="/bundle.js"></script>
+</html>
+
+<script type="text/javascript">
+(function scrollAuto() {
+  if (/Android/gi.test(navigator.userAgent)) {
+    window.addEventListener('resize', function () {
+      if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
+        window.setTimeout(function () {
+          document.activeElement.scrollIntoViewIfNeeded();
+        }, 0);
+      }
+    })
+  }
+})()
+</script>

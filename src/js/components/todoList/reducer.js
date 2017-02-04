@@ -1,0 +1,39 @@
+import { handleActions } from 'redux-actions'
+
+const initialState = {
+  todoList: []
+}
+
+const addItem = (state = initialState) => {
+  const { todoList } = state
+  const newItem = {
+    description: 'redux learning',
+    complete: false
+  }
+
+  return {
+    ...state,
+    todoList: [...todoList, newItem]
+  }
+}
+
+const delItem = (state = initialState, { payload }) => {
+  const { todoList } = state
+  const newList = todoList.map((item, i) => {
+    if (i !== payload) {
+      return item
+    }
+  })
+
+  return {
+    ...state,
+    todoList: newList
+  }
+}
+
+const todoReducer = handleActions({
+  ADD_ITEM: addItem,
+  DEL_ITEM: delItem,
+}, initialState)
+
+export default todoReducer

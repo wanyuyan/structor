@@ -1,0 +1,10 @@
+@import '~style/init/init';
+@import '~style/init/size_init';
+@import '~style/init/icon_fonts';
+
+@import '~style/error_page';    // to update as demand
+
+.app-article {
+  padding: 15px;
+  color: rgb(120, 120, 122);
+}

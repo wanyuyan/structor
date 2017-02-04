@@ -1,0 +1,5 @@
+$baseFontSize: 75;     // 设计稿的横向分辨率 / 10
+
+@function pxToRem($px) {
+  @return $px / $baseFontSize * 1rem;
+}

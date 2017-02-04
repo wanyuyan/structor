@@ -1,0 +1,29 @@
+// 12栅格
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 0 0 $i / 12 * 100%;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+// layout
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hcenter {
+  display: flex;
+  justify-content: center;
+}
+
+.vcenter{
+  display: flex;
+  align-items: center;
+}

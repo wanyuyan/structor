@@ -1,0 +1,59 @@
+#app,
+.error-page {
+  height: 100%;
+}
+
+.error-page {
+  position: relative;
+  background: rgb(0, 136, 223);
+  color: #fff;
+
+  header {
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    background: rgba(0,0,0,0.85);
+  }
+
+  section {
+    margin-top: pxToRem(110);
+    text-align: center;
+
+    img {
+      width: pxToRem(400);
+      height: pxToRem(200);
+    }
+  }
+
+  &-number {
+    margin: 0 auto;
+    width: pxToRem(413);
+    height: pxToRem(196);
+    background: url(~image/500.png) no-repeat;
+    background-size: 100%;
+  }
+
+  &-error {
+    margin-top: pxToRem(67);
+    margin-bottom: .2rem;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  footer {
+    width: 100%;
+    position: absolute;
+    bottom: .93rem;
+    display: flex;
+    justify-content: center;
+
+    .go-home-btn {
+      padding: .4rem 2.4rem;
+      border: 1px solid #fff;
+      border-radius: .67rem;
+      background: transparent;
+      color: #fff;
+      font-size: 14px
+    }
+  }
+}
