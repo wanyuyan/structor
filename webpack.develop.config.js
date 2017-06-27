@@ -16,7 +16,10 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loaders: ['babel-loader']
+        loader: 'babel-loader',
+        query: {
+            presets: ['react', "latest", "stage-3"]
+        }
       },
       {
         test: /\.css$/,
@@ -58,8 +61,8 @@ module.exports = {
   // 配置了这个属性之后 react 和 react-dom 这些第三方的包都不会被构建进 js 中，那么我们就需要通过 cdn 进行文件的引用了
   // 前边的这个名称是在项目中引用用的，相当于 import React from 'react1' 中的 react
   externals: {
-    // 'react1': 'react',
-    // 'react-dom1': 'react-dom',
+    // 'react': 'react',
+    // 'react-dom': 'react-dom'
   },
   devServer: {
     historyApiFallback: true,
