@@ -7,10 +7,10 @@ var CleanPlugin = require("clean-webpack-plugin");
 module.exports = {
   entry: {
     app: path.resolve(__dirname,'src/js/app.js'),
-    vendors: ['react', 'react-dom']
+    vendors: ['react', 'react-dom', 'redux', 'react-redux']
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     chunkFilename: '/[name].[chunkhash:5].chunk.js',
   },
@@ -20,7 +20,7 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel',
         query: {
-            presets: ['es2015', 'react']
+            presets: ['react', "latest", "stage-3"]
         }
       },
       {
@@ -65,7 +65,7 @@ module.exports = {
     // 可以新建多个抽离样式的文件，这样就可以有多个css文件了
     new ExtractTextPlugin("app.css"),
     new HtmlWebpackPlugin({
-      template: './src/template.html',
+      template: './src/index.html',
       htmlWebpackPlugin: {
         'files': {
           'css': ['app.css'],

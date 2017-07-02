@@ -15,6 +15,10 @@ class TodoList extends Component {
     this.props.dispatch(actions.delItem(index))
   }
 
+  toogleItemDone(index) {
+    this.props.dispatch(actions.toogleItemDone(index))
+  }
+
   render() {
     const { todoList } = this.props
     return (
@@ -22,13 +26,23 @@ class TodoList extends Component {
         <ul>
           {todoList && todoList.map((item, index) => (
             <li key={index}>
-              <input type="checkbox" checked={item.complete} />
-              {item.description}
-              <button onClick={this.delItem.bind(this, index)}>删除</button>
+              <input
+                type="checkbox"
+                id={`item-${index}`}
+                checked={item.complete}
+                onClick={this.toogleItemDone.bind(this, index)} />
+              <label htmlFor={`item-${index}`}>
+                {item.description}
+              </label>
+              <button onClick={this.delItem.bind(this, index)}>
+                删除
+              </button>
             </li>
           ))}
         </ul>
-        <button onClick={this.addItem.bind(this)}>添加</button>
+        <button onClick={this.addItem.bind(this)}>
+          添加
+        </button>
       </div>
     )
   }

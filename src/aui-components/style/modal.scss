@@ -1,86 +1,88 @@
-$mask-bg: rgba(0, 0, 0, .4);
-$box-shadow: 0 0 30px rgba(0, 0, 0, .3);
+$mask-bg: rgba(0, 0, 0, .3);
+$box-shadow: 0 0 30px rgba(0, 0, 0, .4);
+$modal-z: 10;
+$modal-container-z: 11;
 
-.mask {
-  position: fixed;
+.absolute-position {
+  position: absolute;
   left: 0;
   top: 0;
-  z-index: 1;
   width: 100%;
   height: 100%;
-  background: $mask-bg;
+}
+
+.modal-wrapper {
+  @extend .absolute-position;
+  z-index: $modal-z;
 }
 
 .modal {
-  position: fixed;
-  z-index: 2;
-  max-width: 100%;
-  max-height: 100%;
-  box-shadow: $box-shadow;
-  background: #fff;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: $mask-bg;
 
-  .closer {
-    display: none;
+  &-mask {
+    @extend .absolute-position;
+    background: $mask-bg;
+  }
+
+  &-center,
+  &-top,
+  &-right,
+  &-bottom,
+  &-left {
+    @extend .absolute-position;
+    z-index: $modal-container-z;
+    display: flex;
   }
 
   &-center {
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    min-width: 70%;
-    border-radius: 3px;
-    animation: .5s ease-in bounceIn;
+    justify-content: center;
+    align-items: center;
 
-    .closer {
-      position: absolute;
-      top: -12px;
-      right: -12px;
-      display: block;
-      width: 30px;
-      height: 30px;
-      background: transparent url(~image/hmc_sprite.png) no-repeat -420px -54px;
+    .modal-container {
+      min-width: 70%;
     }
   }
 
   &-top {
-    top: 0;
-    left: 0;
-    width: 100%;
+    .modal-container {
+      width: 100%;
+    }
   }
 
   &-right {
-    top: 0;
-    right: 0;
-    height: 100%;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    .modal-container {
+      height: 100%;
+    }
   }
 
   &-left {
-    top: 0;
-    left: 0;
-    height: 100%;
+    .modal-container {
+      height: 100%;
+    }
   }
 
   &-bottom {
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    align-items: flex-end;
+
+    .modal-container {
+      width: 100%;
+    }
   }
 
   &-container {
     position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 15px 0;
-  }
-
-  &-content {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding: 0 15px;
+    box-shadow: $box-shadow;
+    background: #fff;
   }
 }
 
+// animations, to optimize later
 .fade-in {
   animation: .2s ease-in fadeIn;
 }

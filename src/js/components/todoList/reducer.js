@@ -19,10 +19,21 @@ const addItem = (state = initialState) => {
 
 const delItem = (state = initialState, { payload }) => {
   const { todoList } = state
+  const newList = todoList.filter((item, i) => i !== payload)
+
+  return {
+    ...state,
+    todoList: newList
+  }
+}
+
+const toogleItemDone = (state = initialState, { payload }) => {
+  const { todoList } = state
   const newList = todoList.map((item, i) => {
-    if (i !== payload) {
-      return item
+    if (i === payload) {
+      item.complete = !item.complete
     }
+    return item
   })
 
   return {
@@ -34,6 +45,7 @@ const delItem = (state = initialState, { payload }) => {
 const todoReducer = handleActions({
   ADD_ITEM: addItem,
   DEL_ITEM: delItem,
+  TOOGLE_ITEM_DONE: toogleItemDone
 }, initialState)
 
 export default todoReducer

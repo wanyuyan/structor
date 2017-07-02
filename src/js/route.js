@@ -36,7 +36,7 @@ export default {
     { path: '/modal',
       getComponent(nextState, cb) {
         require.ensure([], require => {
-          cb(null, require('ui/modal/example').default)
+          cb(null, require('ui/modal/demo').default)
         }, 'modalTest')
       }
     },

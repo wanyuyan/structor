@@ -2,13 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import ReactDom from 'react-dom'
 import 'uiStyle/modal'
 
-class ModalComponent extends Component {
+class Modal extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			position: 'center',
-			maskAnimateClass: 'fade-in',
 			animateClass: '',
 		}
 
@@ -24,7 +23,20 @@ class ModalComponent extends Component {
 			animateClass
 		})
 
-		document.body.style.overflow = 'hidden'
+		this.addEventHandler()
+		document.body.style.overflowY = 'hidden'
+	}
+
+	componentWillUnmount() {
+		this.removeEventHandler()
+	}
+
+	addEventHandler() {
+		window.addEventListener('popstate', this.closeModal, false)
+	}
+
+	removeEventHandler() {
+		window.removeEventListener('popstate', this.closeModal, false)
 	}
 
 	getAnimateClass() {
@@ -42,68 +54,60 @@ class ModalComponent extends Component {
 		}
 	}
 
-	closeModal() {
-		const { animateClass } = this.state
+	openModal() {
+		if (!this.wrapper) {
+			this.wrapper = document.createElement('div')
+			document.body.appendChild(this.wrapper)
+		}
+		ReactDom.render(this.renderModal(), this.wrapper)
+	}
 
-		this.setState({
-			maskAnimateClass: 'fade-in-reverse',
-			animateClass: `${animateClass}-reverse`
-		})
+	closeModal() {
+		this.setState({animateClass: `${this.state.animateClass}-reverse`})
 
 		setTimeout(() => {
-			document.body.removeChild(this.props.container)
+			ReactDom.unmountComponentAtNode(wrapper)
+			document.body.removeChild(wrapper)
 		}, 200)
 
-		document.body.style.overflow = 'auto'
+		document.body.style.overflowY = 'scroll'
 	}
 
-	renderContent() {
-		const { Component, contentFunc } = this.props
-		return Component ?
-			<Component closeModal={this.closeModal} />
-		: contentFunc(this.closeModal)
-	}
+	renderModal() {
+		const { customClass, customStyle, content, maskClosable } = this.props
+		const { position, animateClass } = this.state
 
-	render() {
-		const { maskClosable, style, customClass } = this.props
-		const { position, animateClass, maskAnimateClass } = this.state
-		const modalClass = `modal modal-${position} ${animateClass} ${customClass || ''}`
+		const wrapperClass = `modal-wrapper ${customClass || ''}`
+		const modalClass = `modal-${position} ${animateClass}`
 
 		return (
-			<div>
-				<div className={`mask ${maskAnimateClass}`}
-					onClick={maskClosable && this.closeModal}></div>
-				<div className={modalClass} style={style}>
-					<div className="modal-container">
-						<div className="closer" onClick={this.closeModal}></div>
-						<div className="modal-content">
-							{this.renderContent()}
+			<div className={wrapperClass}>
+				<div className="modal">
+					<div className="modal-mask" onClick={maskClosable && this.closeModal}></div>
+					<div className={modalClass}>
+						<div className="modal-container" style={customStyle}>
+							{showClose ? (
+								<i className="icon-cross" onClose={this.close} />
+							) : null}
+							{content(this.closeModal)}
 						</div>
 					</div>
 				</div>
 			</div>
 		)
 	}
+
+	render() {
+		return null
+	}
 }
 
-ModalComponent.propTypes = {
-	Component: PropTypes.any,
-	contentFunc: PropTypes.func,
+Modal.propTypes = {
+	customClass : PropTypes.string,     // 弹出框样式终极自定义，可覆盖任何样式的默认定义
+	customStyle : PropTypes.object,			// 弹出框容器样式快捷自定义
+	content     : PropTypes.func,
 	maskClosable: PropTypes.bool,
-	position: PropTypes.oneOf(['center', 'top', 'right', 'bottom', 'left']),
-	style: PropTypes.object,
-	customClass: PropTypes.string
-}
-
-const Modal = {}
-Modal.openModal = (options = {}) => {
-	const container = document.createElement('div')
-	document.body.appendChild(container)
-
-	ReactDom.render(
-		<ModalComponent {...options} container={container} />,
-		container
-	)
+	position    : PropTypes.oneOf(['center', 'top', 'right', 'bottom', 'left'])
 }
 
 export default Modal
