@@ -6,10 +6,7 @@ import { Router, browserHistory } from 'react-router'
 import store from 'js/store'
 import route from 'js/route'
 
-import remConfig from 'js/config/remConfig'
 import 'style/app.scss'
-
-remConfig()
 
 ReactDOM.render(
   <Provider store={store}>

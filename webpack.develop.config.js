@@ -1,4 +1,6 @@
 var path = require('path');
+var precss = require('precss');
+var pxtorem = require('postcss-pxtorem');
 
 module.exports = {
   entry: [
@@ -18,16 +20,23 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-            presets: ['react', "latest", "stage-3"]
+            presets: ['react', "latest", "stage-3"],
+            plugins: [["import", { "style": "css", "libraryName": "antd-mobile" }]],
+            babelrc: false
         }
       },
       {
-        test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+          test: /\.css$/,
+          include: /node_modules/,
+          loader: 'style!css!postcss'
       },
       {
-        test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+          test: /\.scss$/,
+          include: [
+            path.resolve('/src/style'),
+            path.resolve('/src/aui-components/style')
+          ],
+          loader: 'style!css!sass!postcss'
       },
       {
         test: /\.(eot|woff|ttf|woff2|svg)$/,   // 处理字体
@@ -56,7 +65,8 @@ module.exports = {
       style: 'src/style',
       image: 'src/public/images'
     },
-    extensions: ['', '.js', '.json', '.scss', 'jsx']
+    modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')],
+    extensions: ['', '.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json', '.scss'],
   },
   // 配置了这个属性之后 react 和 react-dom 这些第三方的包都不会被构建进 js 中，那么我们就需要通过 cdn 进行文件的引用了
   // 前边的这个名称是在项目中引用用的，相当于 import React from 'react1' 中的 react
@@ -66,5 +76,15 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+  },
+  postcss: function() {
+    return [
+      precss,
+      autoprefixer,
+      pxtorem({
+          rootValue: 100,
+          propWhiteList: [],
+      })
+    ];
   }
 };

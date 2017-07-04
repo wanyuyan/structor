@@ -9,51 +9,51 @@
   color: #fff;
 
   header {
-    height: 1.2rem;
-    line-height: 1.2rem;
+    height: 100px;
+    line-height: 100px;
     text-align: center;
     background: rgba(0,0,0,0.85);
   }
 
   section {
-    margin-top: pxToRem(110);
+    margin-top: 220px;
     text-align: center;
 
     img {
-      width: pxToRem(400);
-      height: pxToRem(200);
+      width: 400px;
+      height: 200px;
     }
   }
 
   &-number {
     margin: 0 auto;
-    width: pxToRem(413);
-    height: pxToRem(196);
+    width: 826px;
+    height: 392px;
     background: url(~image/500.png) no-repeat;
     background-size: 100%;
   }
 
   &-error {
-    margin-top: pxToRem(67);
+    margin-top: 134px;
     margin-bottom: .2rem;
-    font-size: 18px;
+    font-size: 36px;
     font-weight: bold;
   }
 
   footer {
     width: 100%;
     position: absolute;
-    bottom: .93rem;
+    bottom: 200px;
     display: flex;
     justify-content: center;
 
     .go-home-btn {
-      padding: .4rem 2.4rem;
-      border: 1px solid #fff;
-      border-radius: .67rem;
+      padding: 30px 180px;
+      border: 2px solid #fff;
+      border-radius: 80px;
       background: transparent;
       color: #fff;
-      font-size: 14px
+      font-size: 28px
     }
   }
 }

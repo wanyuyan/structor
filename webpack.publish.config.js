@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CleanPlugin = require("clean-webpack-plugin");
+var pxtorem = require('postcss-pxtorem');
 
 module.exports = {
   entry: {
@@ -10,7 +11,7 @@ module.exports = {
     vendors: ['react', 'react-dom']
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     chunkFilename: '/[name].[chunkhash:5].chunk.js',
   },
@@ -20,17 +21,19 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel',
         query: {
-            presets: ['es2015', 'react']
+            presets: ['react', "latest", "stage-3"],
+            plugins: [["import", { "style": "css", "libraryName": "antd-mobile" }]],
+            babelrc: false
         }
       },
       {
           test: /\.css$/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+          loader: ExtractTextPlugin.extract("style-loader", "postcss-loader", "css-loader")
       },
       // 可以在 js 中引用 sass 的加载器
       {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+          loader: ExtractTextPlugin.extract("style-loader", "postcss-loader", "css-loader!sass-loader")
       },
       // 处理图片
       {
@@ -44,8 +47,25 @@ module.exports = {
       }
     ]
   },
+  sassLoader: {
+    includePaths: [
+      path.resolve(__dirname, "src/style"),
+      path.resolve(__dirname, "src/aui-components/tyle")
+    ]
+  },
   resolve: {
-    extensions: ['', '.js', '.json', '.sass', 'jsx'],
+    root: path.resolve(__dirname),
+    alias: {
+      ui: 'src/aui-components/js',
+      uiStyle: 'src/aui-components/style',
+      js: 'src/js',
+      container: 'src/js/containers',
+      component: 'src/js/components',
+      style: 'src/style',
+      image: 'src/public/images'
+    },
+    modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')],
+    extensions: ['', '.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.json', '.scss'],
   },
   externals: {
     // 'react1': 'react',
@@ -65,7 +85,7 @@ module.exports = {
     // 可以新建多个抽离样式的文件，这样就可以有多个css文件了
     new ExtractTextPlugin("app.css"),
     new HtmlWebpackPlugin({
-      template: './src/template.html',
+      template: './src/index.html',
       htmlWebpackPlugin: {
         'files': {
           'css': ['app.css'],
@@ -82,8 +102,18 @@ module.exports = {
     new webpack.DefinePlugin({
       //去掉react中的警告，react会自己判断
       'process.env': {
-        NODE_ENV: 'production'
+        NODE_ENV: JSON.stringify('production')
       }
     })
-  ]
+  ],
+  postcss: function() {
+    return [
+        precss,
+        autoprefixer,
+        pxtorem({
+            rootValue: 100,
+            propWhiteList: [],
+        })
+    ];
+  }
 }

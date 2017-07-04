@@ -47,6 +47,13 @@ export default {
         }, 'popupTest')
       }
     },
+    { path: '/antcTest',
+      getComponent(nextState, cb) {
+        require.ensure([], require => {
+          cb(null, require('container/antcTest').default)
+        }, 'antcTest')
+      }
+    },
     { path: '/',
       getComponent(nextState, cb) {
         require.ensure([], require => {
